@@ -239,7 +239,7 @@ function isDataURI(filename) {
 
 var wasmBinaryFile;
 
-wasmBinaryFile = "./src/rnnoise.wasm";
+wasmBinaryFile = "src/rnnoise.wasm";
 
 if (!isDataURI(wasmBinaryFile)) {
  wasmBinaryFile = locateFile(wasmBinaryFile);

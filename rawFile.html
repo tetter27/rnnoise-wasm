@@ -7,10 +7,9 @@
 </head>
 <body>
     <h1>RNNoise Webassembly</h1>
-    <h2>Original Audio</h2>
-    <audio id="my-audio" controls></audio>
-    <h2>Denoised Audio</h2>
-    <audio id="denoised-audio" controls autoplay></audio>
+    <input type="file" id="fileInput" accept=".raw">
+    <audio id="player" controls></audio>
     <script type="module" src="src/index.js"></script>
+    <a id="downloadButton" href="#" download="denoised_audio.raw" style="display:none;">download dstfile</a>
 </body>
 </html>

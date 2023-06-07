@@ -7,10 +7,11 @@
 </head>
 <body>
     <h1>RNNoise Webassembly</h1>
-    <h2>Original Audio</h2>
-    <audio id="my-audio" controls></audio>
-    <h2>Denoised Audio</h2>
-    <audio id="denoised-audio" controls autoplay></audio>
+    <audio id="audioOutput" controls></audio>
+    <div>
+        <button type="button" id="startButton">Start</button>
+        <button type="button" id="stopButton" disabled>Stop</button>
+    <div>
     <script type="module" src="src/index.js"></script>
 </body>
 </html>
