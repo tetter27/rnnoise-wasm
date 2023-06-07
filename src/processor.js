@@ -31,6 +31,8 @@ export async function denoise(inputData) {
       const denoise = wasmModule.HEAPF32.subarray(pcmOutputIndex, pcmOutputIndex + FRAME_SIZE);
     
       outputF32Data.set(denoise, i);
+
+      console.log(outputF32Data);
   }
 
   wasmModule._rnnoise_destroy(denoiser);
