@@ -1,3 +1,4 @@
+
 var createRNNWasmModule = (() => {
   var _scriptDir = typeof document !== 'undefined' && document.currentScript ? document.currentScript.src : undefined;
   
@@ -239,7 +240,7 @@ function isDataURI(filename) {
 
 var wasmBinaryFile;
 
-wasmBinaryFile = "src/rnnoise.wasm";
+wasmBinaryFile = "./src/rnnoise.wasm";
 
 if (!isDataURI(wasmBinaryFile)) {
  wasmBinaryFile = locateFile(wasmBinaryFile);
@@ -356,8 +357,15 @@ function callRuntimeCallbacks(callbacks) {
  }
 }
 
+var wasmTableMirror = [];
+
 function getWasmTableEntry(funcPtr) {
- return wasmTable.get(funcPtr);
+ var func = wasmTableMirror[funcPtr];
+ if (!func) {
+  if (funcPtr >= wasmTableMirror.length) wasmTableMirror.length = funcPtr + 1;
+  wasmTableMirror[funcPtr] = func = wasmTable.get(funcPtr);
+ }
+ return func;
 }
 
 function _emscripten_memcpy_big(dest, src, num) {
@@ -415,20 +423,20 @@ var _rnnoise_create = Module["_rnnoise_create"] = function() {
  return (_rnnoise_create = Module["_rnnoise_create"] = Module["asm"]["f"]).apply(null, arguments);
 };
 
-var _malloc = Module["_malloc"] = function() {
- return (_malloc = Module["_malloc"] = Module["asm"]["g"]).apply(null, arguments);
-};
-
 var _rnnoise_destroy = Module["_rnnoise_destroy"] = function() {
- return (_rnnoise_destroy = Module["_rnnoise_destroy"] = Module["asm"]["h"]).apply(null, arguments);
+ return (_rnnoise_destroy = Module["_rnnoise_destroy"] = Module["asm"]["g"]).apply(null, arguments);
 };
 
 var _free = Module["_free"] = function() {
- return (_free = Module["_free"] = Module["asm"]["i"]).apply(null, arguments);
+ return (_free = Module["_free"] = Module["asm"]["h"]).apply(null, arguments);
 };
 
 var _rnnoise_process_frame = Module["_rnnoise_process_frame"] = function() {
- return (_rnnoise_process_frame = Module["_rnnoise_process_frame"] = Module["asm"]["j"]).apply(null, arguments);
+ return (_rnnoise_process_frame = Module["_rnnoise_process_frame"] = Module["asm"]["i"]).apply(null, arguments);
+};
+
+var _malloc = Module["_malloc"] = function() {
+ return (_malloc = Module["_malloc"] = Module["asm"]["j"]).apply(null, arguments);
 };
 
 var calledRun;

@@ -15,8 +15,7 @@ import createRNNWasmModule from './rnnoise.js';
   const pcmOutputIndex = pcmOutputBuf / 4;
 
   // MediaStream取得とInsertableStream用processor
-  const gUMStream = await navigator.mediaDevices
-    .getUserMedia({ video: false, audio: true })
+  const gUMStream = await navigator.mediaDevices.getUserMedia({ video: false, audio: true })
     .then((stream) => {
       const audioElm = document.getElementById("my-audio");
       audioElm.srcObject = stream;
@@ -54,11 +53,16 @@ import createRNNWasmModule from './rnnoise.js';
         denormalizedInputArray[i] = inputArray[i] * 0x7FFF; // Multiply by 2^15-1 (32767) to Int16 range
       }
 
+      const start = performance.now();
+
       wasmModule.HEAPF32.set(denormalizedInputArray, pcmInputIndex);
-      wasmModule._rnnoise_process_frame(denoiser, pcmOutputBuf, pcmInputBuf);
+      await wasmModule._rnnoise_process_frame(denoiser, pcmOutputBuf, pcmInputBuf);
 
       const denoisedFrame = wasmModule.HEAPF32.subarray(pcmOutputIndex, pcmOutputIndex + FRAME_SIZE);
       outputArray.set(denoisedFrame, 0);
+
+      const end = performance.now();
+      console.log(end - start);
 
       // 正規化
       // AudioDataの値の範囲は -1 〜 1
