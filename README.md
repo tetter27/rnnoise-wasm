@@ -7,3 +7,11 @@
 - [ ] ブラウザの対応状況を確認してSIMD版と通常版を出し分ける
 - [ ] WasmをMultiThread対応する
 - [ ] WebWorkerとAudioWorkletを実装する
+
+
+### LICENCE
+BSD 3-Clause
+
+
+### Refer
+https://github.com/xiph/rnnoise
