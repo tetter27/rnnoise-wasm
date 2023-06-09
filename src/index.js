@@ -35,6 +35,9 @@ import createRNNWasmModule from './rnnoise.js';
   denoisedAudioElm.srcObject = denoisedStream;
   await denoisedAudioElm.play();
 
+  let counter = 0;
+  let totalTime = 0.0;
+
   const transformer = new TransformStream({
     async transform(inputAudioData, controller) {
       const audioByteLength = await inputAudioData.numberOfFrames;
@@ -56,13 +59,24 @@ import createRNNWasmModule from './rnnoise.js';
       const start = performance.now();
 
       wasmModule.HEAPF32.set(denormalizedInputArray, pcmInputIndex);
-      await wasmModule._rnnoise_process_frame(denoiser, pcmOutputBuf, pcmInputBuf);
+      await wasmModule._rnnoise_process_frame(denoiser, pcmOutputBuf, pcmInputBuf)
 
       const denoisedFrame = wasmModule.HEAPF32.subarray(pcmOutputIndex, pcmOutputIndex + FRAME_SIZE);
       outputArray.set(denoisedFrame, 0);
 
       const end = performance.now();
-      console.log(end - start);
+      
+      totalTime = totalTime + (end - start);
+      counter++;
+
+      if (counter % 1000 == 0){
+        console.log("Average: " + (totalTime / counter) + "[ms]");
+        counter = 0;
+        totalTime = 0.0;
+      }
+
+      // console.log("start: " + start + "  end: " + end + "  total: " + (end - start));
+
 
       // 正規化
       // AudioDataの値の範囲は -1 〜 1
