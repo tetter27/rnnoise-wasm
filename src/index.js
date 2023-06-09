@@ -14,11 +14,11 @@ import createRNNWasmModule from './rnnoise.js';
   const pcmInputIndex = pcmInputBuf / 4;
   const pcmOutputIndex = pcmOutputBuf / 4;
 
+  const audioElm = document.getElementById("my-audio");
+
   // MediaStream取得とInsertableStream用processor
   const gUMStream = await navigator.mediaDevices.getUserMedia({ video: false, audio: true })
     .then((stream) => {
-      const audioElm = document.getElementById("my-audio");
-      audioElm.srcObject = stream;
       return stream;
     })
     .catch((error) => {
@@ -29,11 +29,27 @@ import createRNNWasmModule from './rnnoise.js';
   const processor = new MediaStreamTrackProcessor({ track: audioTrack });
   const generator = new MediaStreamTrackGenerator({ kind: "audio" });
 
-  const denoisedAudioElm = document.getElementById("denoised-audio");
   const denoisedStream = new MediaStream();
   denoisedStream.addTrack(generator);
-  denoisedAudioElm.srcObject = denoisedStream;
-  await denoisedAudioElm.play();
+
+  //audioElm.srcObject = stream;
+
+  audioElm.srcObject = denoisedStream;
+  audioElm.play();
+
+  var checkbox = document.getElementById("denoise-switch");
+
+  checkbox.addEventListener('change', function() {
+    if (this.checked) {
+      audioElm.srcObject = denoisedStream;
+      audioElm.play();
+      console.log("Denoised Audio");
+    } else {
+      audioElm.srcObject = gUMStream;
+      audioElm.play();
+      console.log("Original Audio");
+    }
+  });
 
   let counter = 0;
   let totalTime = 0.0;
@@ -70,7 +86,7 @@ import createRNNWasmModule from './rnnoise.js';
       counter++;
 
       if (counter % 1000 == 0){
-        console.log("Average: " + (totalTime / counter) + "[ms]");
+        console.log("Average process time: " + (totalTime / counter) + "[ms]");
         counter = 0;
         totalTime = 0.0;
       }
