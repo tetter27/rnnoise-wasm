@@ -23,8 +23,8 @@ https://tetter27.github.io/rnnoise-wasm/
 
 
 ### LICENCE
- Apache-2.0 license
-
+ Apache-2.0 license (src/rnnoise.wasm以外)
+ BSD-3-Clause license (src/rnnoise.wasm)
 
 ### Refer
 https://github.com/xiph/rnnoise  
