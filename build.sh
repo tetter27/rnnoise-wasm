@@ -2,11 +2,11 @@
 
 set -e
 
-# export OPTIMIZE="-Os"
+# export OPTIMIZE="-Os" # changed
 export OPTIMIZE="-O3" # SIMD
 export LDFLAGS=${OPTIMIZE}
-# export CFLAGS=${OPTIMIZE}
-export CFLAGS="${OPTIMIZE} -msimd128"
+# export CFLAGS=${OPTIMIZE} # changed
+export CFLAGS="${OPTIMIZE} -msimd128" 
 export CXXFLAGS=${OPTIMIZE}
 
 ENTRY_POINT="rnnoise.js"
@@ -34,14 +34,14 @@ echo "============================================="
 
   # For some reason setting the CFLAGS export doesn't apply optimization to all compilation steps
   # so we need to explicitly pass it to configure.
-  emconfigure ./configure --enable-wasm-simd --enable-static=no --disable-examples --disable-doc
+  emconfigure ./configure --enable-wasm-simd --enable-static=no --disable-examples --disable-doc  # changed
   emmake make clean
   emmake make V=1
 
   # For SIMD
   # Compile librnnoise generated LLVM bytecode to wasm with an async loading module.
   emcc \
-    -msimd128 \
+    -msimd128 \  # changed
      ${OPTIMIZE} \
     -g2 \
     -s STRICT=1 \
@@ -58,7 +58,7 @@ echo "============================================="
 
   # Compile librnnoise generated LLVM bytecode to wasm with a sync loading module and inline wasm bytecode.
   emcc \
-    -msimd128 \
+    -msimd128 \  # changed
      ${OPTIMIZE} \
     -g2 \
     -s ALLOW_MEMORY_GROWTH=1 \
