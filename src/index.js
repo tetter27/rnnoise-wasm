@@ -17,7 +17,11 @@ import createRNNWasmModule from './rnnoise.js';
   const audioElm = document.getElementById("my-audio");
 
   // MediaStream取得とInsertableStream用processor
-  const gUMStream = await navigator.mediaDevices.getUserMedia({ video: false, audio: true })
+  const gUMStream = await navigator.mediaDevices.getUserMedia({ 
+    video: false, 
+    audio: {
+      echoCancellation: false, 
+      noiseSuppression: false} })
     .then((stream) => {
       return stream;
     })
