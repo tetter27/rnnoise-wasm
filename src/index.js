@@ -17,7 +17,11 @@ import createRNNWasmModule from './rnnoise.js';
   const audioElm = document.getElementById("my-audio");
 
   // MediaStream取得とInsertableStream用processor
-  const gUMStream = await navigator.mediaDevices.getUserMedia({ video: false, audio: true })
+  const gUMStream = await navigator.mediaDevices.getUserMedia({ 
+    video: false, 
+    audio: {
+      echoCancellation: false, 
+      noiseSuppression: false} })
     .then((stream) => {
       return stream;
     })
@@ -25,7 +29,7 @@ import createRNNWasmModule from './rnnoise.js';
       console.error("mediaDevice.getUserMedia() error:", error);
       return;
   });
-  const audioTrack = gUMStream.getAudioTracks()[0]
+  const audioTrack = gUMStream.getAudioTracks()[0];
   const processor = new MediaStreamTrackProcessor({ track: audioTrack });
   const generator = new MediaStreamTrackGenerator({ kind: "audio" });
 
