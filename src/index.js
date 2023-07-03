@@ -29,7 +29,7 @@ import createRNNWasmModule from './rnnoise.js';
       console.error("mediaDevice.getUserMedia() error:", error);
       return;
   });
-  const audioTrack = gUMStream.getAudioTracks()[0]
+  const audioTrack = gUMStream.getAudioTracks()[0];
   const processor = new MediaStreamTrackProcessor({ track: audioTrack });
   const generator = new MediaStreamTrackGenerator({ kind: "audio" });
 
