@@ -23,8 +23,8 @@ https://tetter27.github.io/rnnoise-wasm/
 
 
 ### LICENCE
- MIT license (index.html, src/index.js)
- Apache-2.0 license (build.sh)
+ MIT license (index.html, src/index.js)  
+ Apache-2.0 license (build.sh)  
  BSD-3-Clause license (src/rnnoise.wasm, src/rnnoise.js)
 
 ### Refer
