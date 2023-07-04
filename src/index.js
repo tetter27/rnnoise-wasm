@@ -1,10 +1,12 @@
 import createRNNWasmModule from './rnnoise.js';
+import RingBuffer from './../audio-utils/src/ringBuffer.js'
 
 (async () => {
 
   const FRAME_SIZE = 480; // RNNoiseの入力フレームサイズ
   const BUFFER_SIZE = FRAME_SIZE * 4; // Float32
-  console.log("start denoising.")
+  const INPUT_BUFFER_FRAMES = 10;
+  console.log("start denoising.");
 
   const wasmModule = await createRNNWasmModule();
   const denoiser = wasmModule._rnnoise_create();
@@ -16,10 +18,14 @@ import createRNNWasmModule from './rnnoise.js';
 
   const audioElm = document.getElementById("my-audio");
 
+  const inputBuffer = new RingBuffer(INPUT_BUFFER_FRAMES * FRAME_SIZE, Float32Array);
+
   // MediaStream取得とInsertableStream用processor
   const gUMStream = await navigator.mediaDevices.getUserMedia({ 
     video: false, 
-    audio: true})
+    audio: {
+      noiseSuppression: false,
+    }})
     .then((stream) => {
       return stream;
     })
@@ -66,7 +72,6 @@ import createRNNWasmModule from './rnnoise.js';
       const normalizedOutputArray = new Float32Array(inputArray.length);
 
       inputAudioData.copyTo(inputArray, {planeIndex: 0});
-      console.log(inputArray);
 
       // 非正規化
       // AudioDataの値の範囲は -1 〜 1

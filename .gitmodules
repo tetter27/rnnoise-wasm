@@ -1,3 +1,6 @@
 [submodule "rnnoise"]
 	path = rnnoise
 	url = https://github.com/xiph/rnnoise.git
+[submodule "audio-utils"]
+	path = audio-utils
+	url = https://github.com/tetter27/audio-utils.git
