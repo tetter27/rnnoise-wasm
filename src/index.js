@@ -1,5 +1,4 @@
 import createRNNWasmModule from './rnnoise.js';
-import RingBuffer from './../audio-utils/src/ringBuffer.js'
 
 (async () => {
 
@@ -17,8 +16,6 @@ import RingBuffer from './../audio-utils/src/ringBuffer.js'
   const pcmOutputIndex = pcmOutputBuf / 4;
 
   const audioElm = document.getElementById("my-audio");
-
-  const inputBuffer = new RingBuffer(INPUT_BUFFER_FRAMES * FRAME_SIZE, Float32Array);
 
   // MediaStream取得とInsertableStream用processor
   const gUMStream = await navigator.mediaDevices.getUserMedia({ 
