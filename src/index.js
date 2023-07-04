@@ -19,9 +19,7 @@ import createRNNWasmModule from './rnnoise.js';
   // MediaStream取得とInsertableStream用processor
   const gUMStream = await navigator.mediaDevices.getUserMedia({ 
     video: false, 
-    audio: {
-      echoCancellation: false, 
-      noiseSuppression: false} })
+    audio: true})
     .then((stream) => {
       return stream;
     })
@@ -68,6 +66,7 @@ import createRNNWasmModule from './rnnoise.js';
       const normalizedOutputArray = new Float32Array(inputArray.length);
 
       inputAudioData.copyTo(inputArray, {planeIndex: 0});
+      console.log(inputArray);
 
       // 非正規化
       // AudioDataの値の範囲は -1 〜 1
